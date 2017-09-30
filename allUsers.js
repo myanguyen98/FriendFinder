@@ -1,11 +1,11 @@
 var allUsers = [
-	{
-		name:,
-		picture:,
+	/*{
+		name:"",
+		picture:"",
 		scores:[
 
 		],
-	}
+	}*/
 ];
 
 module.exports = allUsers;

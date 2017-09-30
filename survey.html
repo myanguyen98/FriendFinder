@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
 	<meta charset="UTF-8">
 	<title>Friend Finder|Survey</title>
 </head>
@@ -126,8 +132,8 @@
 	<hr>
 
 	<button type="submit" class="btn btn-primary btn-lg btn-block" id="submit">Submit       <i class="glyphicon glyphicon-thumbs-up"></i></button>
-
 	<br>
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="span4">
@@ -136,6 +142,28 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="myModal" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Friend Match</h4>
+	          <h5 class="modal-title" id="matchName"></h5>
+	        </div>
+
+	        <div class="modal-body">
+	          <p id="friendPic"></p>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+  </div>
+  
 </body>
 
 <style type="text/css">
@@ -143,5 +171,65 @@
 		margin: 20px 100px 20px 100px
 	}
 </style>
+
+<script type="text/javascript">
+
+
+    $("#submit").on("click", function(event) {
+      event.preventDefault();
+
+      
+	      var newUser = {
+	        name: $("#name").val().trim(),
+	        picture: $("#pictureLink").val().trim(),
+	        scores: [
+	        					 
+
+	        				]
+	      };
+
+
+	      $( "select option:selected" ).each(function(){
+
+	      	var num = $(this).val().trim();
+	      	//console.log(this);
+	      	var scores = parseInt(num);
+	      	
+	      	newUser["scores"].push(scores);
+	      });
+
+	      $("#matchName").html(newUser.name);
+	      $("#friendPic").html('<img max width="100%"src=" ' + newUser.picture + '">')
+	      //$tempDiv.append('<img src=" ' + response.Poster + '">')
+
+	      
+	      
+	      console.log(newUser);
+
+	      
+	      $.post("/api/friends", newUser,
+	        function(data) {
+
+	          //change this to the modal pop up
+	          if (data) {
+	            $("#myModal").modal();
+	          }
+
+	          
+	          else {
+	            alert("Sorry you are on the wait list");
+	          }
+
+	          
+	 
+	      });
+
+
+
+	      
+
+    });
+
+</script>
 
 </html>
